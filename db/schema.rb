@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190727000118) do
+ActiveRecord::Schema.define(version: 20190727193628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.string "nickname"
     t.string "street"
     t.string "city"
     t.string "state"
     t.integer "zip"
     t.bigint "user_id"
+    t.string "nickname", default: "Home"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 

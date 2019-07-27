@@ -1,15 +1,30 @@
 <%= form_for @user do |f| %>
+
   <%= f.label :name %>
-  <%= f.text_field :name %>
+  <%= f.text_field :name, required: true %><br>
 
   <%= f.label :email %>
-  <%= f.email_field :email %>
+  <%= f.email_field :email, required: true, value: "" %><br>
+
+  <%= f.fields_for :addresses do |c| %>
+    <%= c.label :street, "Address" %>
+    <%= c.text_field :street, required: true %><br>
+
+    <%= c.label :city %>
+    <%= c.text_field :city, required: true %><br>
+
+    <%= c.label :state %>
+    <%= c.text_field :state, required: true %><br>
+
+    <%= c.label :zip %>
+    <%= c.text_field :zip, required: true %><br>
+  <% end %>
 
   <%= f.label :password %>
-  <%= f.password_field :password %>
+  <%= f.password_field :password, required: true %><br>
 
   <%= f.label :password_confirmation %>
-  <%= f.password_field :password_confirmation %>
+  <%= f.password_field :password_confirmation, required: true %><br>
 
-  <%= f.submit 'Register' %>
+  <%= f.submit "Register User" %>
 <% end %>

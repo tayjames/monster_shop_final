@@ -8,6 +8,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    @user.addresses.new
   end
 
   def create
@@ -44,6 +45,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password)
+    params.require(:user)
+    .permit(:name, :email, :password, addresses_attributes: [:street, :city, :state, :zip])
   end
 end

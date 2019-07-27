@@ -14,11 +14,17 @@ RSpec.describe "User registration with address" do
     fill_in "user[addresses_attributes][0][zip]", with: "80220"
     fill_in "user[password]", with: "password"
     fill_in "user[password_confirmation]", with: "password"
-    click_button "Register User"
 
+    click_button "Register User"
+    expect(current_path).to eq(profile_path)
+    home = Address.last
     user = User.last
 
-    expect(current_path).to eq(profile_path)
-    expect(user.addresses[0][:nickname]).to eq("Home")
+    expect(user.reload.addresses[-1]).to eq(home)
+    expect(home.street).to eq("1111 Ash St")
+    expect(home.city).to eq("Denver")
+    expect(home.state).to eq("CO")
+    expect(home.zip).to eq(80220)
+    expect(home.nickname).to eq("Home")
   end
 end

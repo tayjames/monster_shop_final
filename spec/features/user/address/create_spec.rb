@@ -49,7 +49,7 @@ RSpec.describe 'Create Address' do
       fill_in "Zip", with: ""
       fill_in "Nickname", with: ""
       click_button("Add New Address")
-      
+
       expect(page).to have_content("Nickname can't be blank. Street can't be blank. City can't be blank. State can't be blank. Zip can't be blank")
     end
   end

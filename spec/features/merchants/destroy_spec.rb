@@ -8,7 +8,8 @@ RSpec.describe 'Destroy Existing Merchant' do
       @ogre = @megan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
       @giant = @brian.items.create!(name: 'Giant', description: "I'm a Giant!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
       @user = User.create!(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
-      @order = @user.orders.create!
+      @home = @user.addresses.create!(street: "1111 Ash St.", city: "Denver", state: "CO", zip: "80220")
+      @order = @user.orders.create!(address: @home)
       @order.order_items.create(item: @ogre, quantity: 3, price: @ogre.price)
     end
 

@@ -5,7 +5,7 @@ class User::AddressesController < ApplicationController
   end
 
   def create
-    @address = Address.new(address_params)
+    @address = current_user.addresses.new(address_params)
     if @address.save
       redirect_to profile_path
     else
@@ -15,7 +15,38 @@ class User::AddressesController < ApplicationController
     end
   end
 
+  def edit
+    @user = current_user
+    @address = Address.find(params[:id])
+  end
+
+  def update
+    @user = current_user
+    @address = Address.find(params[:id])
+
+    if @address.shipped_orders.empty? && @address.update_attributes(address_params)
+      redirect_to profile_path
+    else
+      # flash message?
+      render :edit
+    end
+  end
+
+  def destroy
+    @user = current_user
+    @address = Address.find(params[:id])
+    # binding.pry
+    @address.destroy
+    redirect_to profile_path
+    # if @address.shipped_orders.empty?
+    # @address.destroy
+    # else
+    #   flash[:notice] = "Address can't be deleted"
+    # end
+  end
+
   private
+
   def address_params
     params[:address][:user_id] = current_user.id
     params.require(:address).permit(:id, :street, :city, :state, :zip, :nickname, :user_id)

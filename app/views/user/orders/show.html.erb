@@ -6,6 +6,10 @@
 <p>Total: <%= number_to_currency(@order.grand_total) %></p>
 <%= button_to 'Cancel Order', "/profile/orders/#{@order.id}", method: :delete if @order.pending? %>
 
+
+<%= button_to 'Change Address', cart_path, method: :get if @order.pending? %>
+
+
 <h2>Order Items</h2>
 <% @order.order_items.each do |order_item| %>
   <section id='order-item-<%= order_item.id %>'>
@@ -15,4 +19,11 @@
     <p>Price: <%= number_to_currency(order_item.price) %></p>
     <p>Subtotal: <%= number_to_currency(order_item.subtotal) %></p>
   </section>
+
+<h2>Shipping Address</h2>
+  <%= @order.address.street %></br>
+  <%= @order.address.city %></br>
+  <%= @order.address.state %></br>
+  <%= @order.address.zip %></br>
+  <%= @order.address.nickname %>
 <% end %>

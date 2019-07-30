@@ -9,10 +9,14 @@ RSpec.describe 'Cart Show Page' do
       @ogre = @megan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
       @giant = @megan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
+      @user = User.create!(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @home = @user.addresses.create!(street: "1111 Ash St.", city: "Denver", state: "CO", zip: "80220")
+      @casita = @user.addresses.create!(street: "2 LaHabre Dr.", city: "Pueblo", state: "CO", zip: "81005")
     end
 
     describe 'I can see my cart' do
       it "I can visit a cart show page to see items in my cart" do
+
         visit item_path(@ogre)
         click_button 'Add to Cart'
         visit item_path(@hippo)
@@ -21,7 +25,6 @@ RSpec.describe 'Cart Show Page' do
         click_button 'Add to Cart'
 
         visit '/cart'
-
         expect(page).to have_content("Total: #{number_to_currency((@ogre.price * 1) + (@hippo.price * 2))}")
 
         within "#item-#{@ogre.id}" do
@@ -166,6 +169,70 @@ RSpec.describe 'Cart Show Page' do
         expect(current_path).to eq('/cart')
         expect(page).to_not have_content("#{@hippo.name}")
         expect(page).to have_content("Cart: 0")
+      end
+    end
+  end
+
+  describe "As a registered user" do
+    before :each do
+      @megan = Merchant.create!(name: 'Megans Marmalades', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
+      @brian = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218)
+      @ogre = @megan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
+      @giant = @megan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
+      @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
+      @user = User.create!(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
+      @home = @user.addresses.create!(street: "1111 Ash St.", city: "Denver", state: "CO", zip: "80220")
+      @casita = @user.addresses.create!(street: "2 LaHabre Dr.", city: "Pueblo", state: "CO", zip: "81005")
+    end
+
+     it "When I visit the cart show page, I see a list of addresses to ship to" do
+       visit login_path
+
+       fill_in 'Email', with: @user.email
+       fill_in 'Password', with: @user.password
+       click_button 'Log In'
+
+       visit item_path(@hippo)
+       click_button 'Add to Cart'
+       visit item_path(@hippo)
+       click_button 'Add to Cart'
+       visit item_path(@hippo)
+       click_button 'Add to Cart'
+
+       visit '/cart'
+
+       expect(page).to have_content(@home.street)
+       expect(page).to have_content(@casita.street)
+       expect(page).to have_button('Checkout')
+    end
+
+  describe "As a registered user" do
+    before :each do
+      @megan = Merchant.create!(name: 'Megans Marmalades', address: '123 Main St', city: 'Denver', state: 'CO', zip: 80218)
+      @brian = Merchant.create!(name: 'Brians Bagels', address: '125 Main St', city: 'Denver', state: 'CO', zip: 80218)
+      @ogre = @megan.items.create!(name: 'Ogre', description: "I'm an Ogre!", price: 20, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 5 )
+      @giant = @megan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
+      @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
+      @user = User.create!(name: 'Megan', email: 'megano@example.com', password: 'securepassword')
+    end
+
+     it "When I visit the cart show page, and I don't have any addresses on file, I see a link to add an address" do
+       visit login_path
+
+       fill_in 'Email', with: @user.email
+       fill_in 'Password', with: @user.password
+       click_button 'Log In'
+
+       visit item_path(@hippo)
+       click_button 'Add to Cart'
+       visit item_path(@hippo)
+       click_button 'Add to Cart'
+       visit item_path(@hippo)
+       click_button 'Add to Cart'
+
+       visit '/cart'
+       expect(page).to have_content('Please add an address')
+       expect(page).to_not have_button('Checkout')
       end
     end
   end

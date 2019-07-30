@@ -49,6 +49,6 @@ Rails.application.routes.draw do
   end
 
   namespace :user do
-    resources :addresses, only: [:index, :new, :create]
+    resources :addresses, only: [:index, :new, :create, :edit, :update, :destroy]
   end
 end

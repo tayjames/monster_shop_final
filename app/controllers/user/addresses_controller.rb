@@ -27,7 +27,6 @@ class User::AddressesController < ApplicationController
     if @address.shipped_orders.empty? && @address.update_attributes(address_params)
       redirect_to profile_path
     else
-      # flash message?
       render :edit
     end
   end
@@ -35,7 +34,6 @@ class User::AddressesController < ApplicationController
   def destroy
     @user = current_user
     @address = Address.find(params[:id])
-    # binding.pry
     @address.destroy
     redirect_to profile_path
     # if @address.shipped_orders.empty?

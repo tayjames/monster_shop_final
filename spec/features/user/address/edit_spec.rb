@@ -8,14 +8,13 @@ RSpec.describe "Editing address" do
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
     end
 
-    it "I can click a link to edit an address on file" do
+    it "I can click a link on my profile page to edit an address on file" do
       visit profile_path
-      # binding.pry
-      # save_and_open_page
+
       within "#address-#{@home.id}" do
         click_link("Edit Address")
       end
-      # binding.pry
+
       expect(current_path).to eq(edit_user_address_path(@home))
       fill_in "Street", with: "2 LaHabre Dr"
       fill_in "City", with: "Pueblo"

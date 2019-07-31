@@ -4,7 +4,6 @@ RSpec.describe "User registration with address" do
   it "can register a new user with default address equal to 'Home'" do
     visit root_path
     click_on "Register"
-    # save_and_open_page
 
     fill_in "Name", with: "Tay James"
     fill_in "user[email]", with: "james.tay@gmail.com"

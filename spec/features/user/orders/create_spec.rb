@@ -10,10 +10,16 @@ RSpec.describe 'Create Order' do
       @giant = @megan.items.create!(name: 'Giant', description: "I'm a Giant!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @hippo = @brian.items.create!(name: 'Hippo', description: "I'm a Hippo!", price: 50, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaLM_vbg2Rh-mZ-B4t-RSU9AmSfEEq_SN9xPP_qrA2I6Ftq_D9Qw', active: true, inventory: 3 )
       @user = User.create!(name: 'Megan', email: 'megan@example.com', password: 'securepassword')
-      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+      @home = @user.addresses.create!(street: "1111 Ash St.", city: "Denver", state: "CO", zip: "80220")
     end
 
     it 'I can click a link to get to create an order' do
+      visit login_path
+
+      fill_in "Email", with: @user.email
+      fill_in "Password", with: @user.password
+      click_on("Log In!")
+
       visit item_path(@ogre)
       click_button 'Add to Cart'
       visit item_path(@hippo)
@@ -22,8 +28,7 @@ RSpec.describe 'Create Order' do
       click_button 'Add to Cart'
 
       visit '/cart'
-
-      click_button 'Check Out'
+      click_button 'Checkout'
 
       order = Order.last
 

@@ -24,7 +24,6 @@ RSpec.describe 'Order Show Page' do
       @order_item_3 = @order_2.order_items.create!(item: @ogre, price: @ogre.price, quantity: 2, fulfilled: false)
 
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
-      # binding.pry
     end
 
     it 'I can link from my orders to an order show page' do
@@ -75,13 +74,16 @@ RSpec.describe 'Order Show Page' do
     it 'I see a link to change an orders address, only on a pending order show page' do
       visit "/profile/orders/#{@order_1.id}"
       expect(page).to_not have_button('Change Address')
-      save_and_open_page
-      visit "/profile/orders/#{@order_2.id}"
-      save_and_open_page
 
+      visit "/profile/orders/#{@order_2.id}"
       expect(page).to have_button('Change Address')
+
       click_button('Change Address')
-      expect(current_path).to eq(cart_path)
+
+      # expect(current_path).to eq(cart_path)
+      # expect(page).to have_content(@home.name)
+      # expect(page).to have_content(@casita.name)
+      # click
     end
 
     it 'I can cancel an order to return its contents to the items inventory' do

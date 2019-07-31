@@ -13,7 +13,7 @@ RSpec.describe 'Merchant Show Page' do
       @user_1 = User.create!(name: 'Megan', email: 'megan_1@example.com', password: 'securepassword')
       @user_2 = User.create!(name: 'Megan', email: 'megan_2@example.com', password: 'securepassword')
       @home = @user_1.addresses.create!(street: "1111 Ash St.", city: "Denver", state: "CO", zip: "80220")
-      @casa = @user_2.addresses.create!(street: "1111 Ash St.", city: "Denver", state: "CO", zip: "80220")
+      @casa = @user_2.addresses.create!(street: "1111 Ash St.", city: "Denver", state: "IA", zip: "80220")
       @order_1 = @user_1.orders.create!(address: @home)
       @order_2 = @user_2.orders.create!(address: @casa)
       @order_2 = @user_2.orders.create!(address: @casa)

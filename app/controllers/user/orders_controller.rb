@@ -10,7 +10,6 @@ class User::OrdersController < ApplicationController
   end
 
   def create
-    # user = User.find(params[:id])
     address = Address.find(params["order"]["address_id"])
     order = current_user.orders.new
     order.address = address
@@ -34,7 +33,7 @@ class User::OrdersController < ApplicationController
   def update
     order = current_user.orders.find(params[:id])
     order.update_attributes(order_params)
-    # redirect_to orders_path
+    redirect_to orders_path
   end
 
   def cancel

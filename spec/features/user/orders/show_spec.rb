@@ -76,14 +76,24 @@ RSpec.describe 'Order Show Page' do
       expect(page).to_not have_button('Change Address')
 
       visit "/profile/orders/#{@order_2.id}"
+      expect(page).to have_content(@home.street)
       expect(page).to have_button('Change Address')
 
       click_button('Change Address')
+      expect(current_path).to eq("/profile/orders/#{@order_2.id}/edit")
 
-      # expect(current_path).to eq(cart_path)
-      # expect(page).to have_content(@home.name)
-      # expect(page).to have_content(@casita.name)
-      # click
+      expect(page).to have_content(@home.street)
+      expect(page).to have_content(@casita.street)
+
+      # choose(@casita.street, visible: false)
+      # choose(@casita.street, allow_label_click: true)
+      find(text: @casita.street).click
+      click_button('Change Address')
+      # save_and_open_page
+      expect(current_path).to eq(orders_path)
+      visit "/profile/orders/#{@order_2.id}"
+      expect(page).to have_content(@casita.street)
+
     end
 
     it 'I can cancel an order to return its contents to the items inventory' do

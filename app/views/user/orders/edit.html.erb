@@ -2,6 +2,6 @@
   <% current_user.addresses.each do |address| %>
     <%= f.radio_button :address_id, address.id %>
     <%= f.label :address_id, address.street %>
-    <%= f.submit 'Change Address', url: order_update_path(@order.id), method: :patch  %>
+    <%= f.submit 'Change Address', url: order_update_path(@order.id), method: :put  %>
   <% end %>
 <% end %>
